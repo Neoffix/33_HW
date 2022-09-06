@@ -5,8 +5,8 @@ import json
 import pandas as pd
 
 path = os.environ.get('PROJECT_PATH', 'C:/Homework/airflow_hw')
-file_pipe = os.listdir(f'{path}/data/models/')
-file_test = os.listdir(f'{path}/data/test/')
+file_pipe = os.listdir(f'{path}data/models/')
+file_test = os.listdir(f'{path}data/test/')
 
 
 def predict():
@@ -19,11 +19,13 @@ def predict():
 
         df = pd.DataFrame.from_dict([form])
         y = model.predict(df)
-        df['predict'] = y
-        df_final = pd.concat([df_final, df], ignore_index=True)
-        print(df_final)
 
-    df_final.to_csv(f'{path}/data/predictions/preds_{datetime.now().strftime("%Y%m%d%H%M")}.csv')
+        df['predict'] = y
+        df = df[['id', 'predict']]
+        df_final = pd.concat([df_final, df], ignore_index=True)
+
+
+    df_final.to_csv(f'{path}data/predictions/preds_{datetime.now().strftime("%Y%m%d%H%M")}.csv')
 
 
 
